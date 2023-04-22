@@ -2,10 +2,9 @@ def say(number):
     """
     Given a number from 0 to 999,999,999,999, spell out that number in English.
     """
-    digits = []
-    residue = number
-    words_each_three_numbers = ["", "thousand", "million", "billion"]
-    result = []
+    if number < 0 or number > 999999999999:
+        raise ValueError("input out of range")
+    
     text_numbers_data = {
         "0" : "zero",
         "1" : "one",
@@ -36,17 +35,36 @@ def say(number):
         "80" : "eighty",
         "90" : "ninety",
     }
+
+    if number < 21:
+        return text_numbers_data[str(number)]
+
+    digits = []
+    residue = number
+    words_each_three_numbers = ["", "thousand", "million", "billion"]
+    result = []
     trio_numbers = []
     trio_numbers_result = []
-
+    
     while residue > 0:
         digits.append(residue % 1000)
+        #print(f'{residue=}')
         residue //= 1000
 
     #digits = list(reversed(digits))
+    #print(f'{digits=}')
+
+    
+        
 
     for digit in digits:
         trio_numbers.append(str(digit))
+    
+    for index, value in enumerate(trio_numbers):
+        if len(value) == 2:
+            trio_numbers[index] = '0' + trio_numbers[index]
+
+    #print(f'{trio_numbers=}')
 
     for trio in trio_numbers:
         text = ""
@@ -70,6 +88,7 @@ def say(number):
             trio_numbers_result.append(text)
             continue
         else:
+            #print(f'{trio=}')
             if trio[1] == "0":
                     text += text_numbers_data[trio[1]] + "-" + text_numbers_data[trio[2]]
                     trio_numbers_result.append(text)
@@ -78,15 +97,25 @@ def say(number):
                 text += text_numbers_data[trio[1] + "0"] + "-" + text_numbers_data[trio[2]]
                 trio_numbers_result.append(text)
                 continue
-
-    print(list(reversed(trio_numbers_result)))
+    
+    trio_numbers_result = list(reversed(trio_numbers_result))
+    #print(list(reversed(trio_numbers_result)))
 
     for index, digit in enumerate(digits):
         result.append(words_each_three_numbers[index])
         result.append(str(digit))
 
-    return list(reversed(result))
+    result = list(reversed(result))
+    counter = 0
+    for index, value in enumerate(result):
+        if value.isnumeric():
+            result[index] = trio_numbers_result[counter]
+            counter += 1
+
+    return (" ".join(result)).replace("zero hundred ", "").replace("zero-zero", "").replace("zero", "").replace("  thousand", "").replace("  million", "").strip()
 
 
 if __name__ == "__main__":
-    print(say(1234567890))
+    print(say(1000000))
+    print(say(987654321123))
+    print(say(1002345))
