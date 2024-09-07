@@ -37,5 +37,6 @@ def factores(startnum):
     return prime_factors
 
 if __name__ == "__main__":
-    print(factores(100000000001))
-    print(factors(100000000001))
+    print(factores(4594590))
+    print(factors(1000268431))
+    print(factors(1000268432))

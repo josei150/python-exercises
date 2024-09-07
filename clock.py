@@ -3,8 +3,11 @@ class Clock:
         self.hour = hour
         self.minute = minute
         while self.minute < 0 or self.minute > 59:
+            print(self.hour, self.minute)
             self.hour += self.minute // 60
             self.minute = self.minute % 60
+            print(self.hour, self.minute)
+
 
         while self.hour < 0 or self.hour > 23:
                 self.hour = self.hour % 24
@@ -26,14 +29,10 @@ class Clock:
 
 
 if __name__ == "__main__":
-    clock = Clock(-5, 60)
-    print(clock.__repr__())
-    clock += 20
+    clock = Clock(2, 20)
+    #print(clock.__repr__())
+    clock -= 3000
     print(clock)
 
 
-    ["  +-+",
-     "  | |",
-     "+-+-+",
-     "| | |",
-     "+-+-+"]
+    
